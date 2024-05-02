@@ -4,57 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+        }
+
+        form {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #logsList {
+            margin-top: 30px;
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        #logsList li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Account Management System</h1>
+    <div class="container">
+        <h1>Welcome to the Account Management System</h1>
 
-    <h2>Register</h2>
-    <form id="registerForm">
-        <label for="regUsername">Username:</label>
-        <input type="text" id="regUsername" name="regUsername" required><br><br>
-        <label for="regPassword">Password:</label>
-        <input type="password" id="regPassword" name="regPassword" required><br><br>
-        <button type="button" onclick="register()">Register</button>
-    </form>
+        <h2>Register</h2>
+        <form id="registerForm">
+            <label for="regUsername">Username:</label>
+            <input type="text" id="regUsername" name="regUsername" required><br><br>
+            <label for="regPassword">Password:</label>
+            <input type="password" id="regPassword" name="regPassword" required><br><br>
+            <button type="button" onclick="register()">Register</button>
+        </form>
 
-    <h2>Login</h2>
-    <form id="loginForm">
-        <label for="loginUsername">Username:</label>
-        <input type="text" id="loginUsername" name="loginUsername" required><br><br>
-        <label for="loginPassword">Password:</label>
-        <input type="password" id="loginPassword" name="loginPassword" required><br><br>
-        <button type="button" onclick="login()">Login</button>
-    </form>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="loginUsername">Username:</label>
+            <input type="text" id="loginUsername" name="loginUsername" required><br><br>
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" name="loginPassword" required><br><br>
+            <button type="button" onclick="login()">Login</button>
+        </form>
 
-    <h2>Update Profile</h2>
-    <form id="profileForm" style="display: none;">
-        <label for="newUsername">New Username:</label>
-        <input type="text" id="newUsername" name="newUsername" required><br><br>
-        <button type="button" onclick="updateProfile()">Update Profile</button>
-    </form>
-
-    <h2>User Activity Logs</h2>
-    <button type="button" onclick="getLogs()">View Logs</button>
-    <div id="logs" style="display: none;">
+        <h2>User Activity Logs</h2>
         <ul id="logsList"></ul>
     </div>
 
-    <div id="message" style="display: none;"></div>
-
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-        function showMessage(message, type) {
-            const messageDiv = document.getElementById("message");
-            messageDiv.innerHTML = message;
-            messageDiv.style.display = "block";
-            if (type === "error") {
-                messageDiv.style.color = "red";
-            } else {
-                messageDiv.style.color = "green";
-            }
-            setTimeout(() => {
-                messageDiv.style.display = "none";
-            }, 3000);
-        }
+        const socket = io();
 
         function register() {
             const username = document.getElementById("regUsername").value;
@@ -67,11 +115,10 @@
                 body: JSON.stringify({username, password})
             })
             .then(response => {
-                console.log("Register response received:", response);
                 if (response.status === 201) {
-                    showMessage('User created successfully', 'success');
+                    alert('User created successfully');
                 } else if (response.status === 409) {
-                    showMessage('Username already exists', 'error');
+                    alert('Username already exists');
                 }
             })
             .catch(error => {
@@ -90,15 +137,10 @@
                 body: JSON.stringify({username, password})
             })
             .then(response => {
-                console.log("Login response received:", response);
                 if (response.status === 200) {
-                    showMessage('Login successful', 'success');
-                    document.getElementById("registerForm").style.display = "none";
-                    document.getElementById("loginForm").style.display = "none";
-                    document.getElementById("profileForm").style.display = "block";
-                    document.getElementById("logs").style.display = "block";
+                    alert('Login successful');
                 } else if (response.status === 401) {
-                    showMessage('Invalid username or password', 'error');
+                    alert('Invalid username or password');
                 }
             })
             .catch(error => {
@@ -106,45 +148,12 @@
             });
         }
 
-        function updateProfile() {
-            const newUsername = document.getElementById("newUsername").value;
-            fetch('/profile/1', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({username: newUsername})
-            })
-            .then(response => {
-                console.log("Update Profile response received:", response);
-                if (response.status === 200) {
-                    showMessage('User profile updated successfully', 'success');
-                } else {
-                    showMessage('Failed to update profile', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
-
-        function getLogs() {
-            fetch('/logs')
-            .then(response => response.json())
-            .then(data => {
-                console.log("Logs response received:", data);
-                const logsList = document.getElementById("logsList");
-                logsList.innerHTML = "";
-                data.logs.forEach(log => {
-                    const li = document.createElement("li");
-                    li.appendChild(document.createTextNode(`${log.created_at}: User ${log.user_id} - ${log.activity}`));
-                    logsList.appendChild(li);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
+        socket.on('logAdded', (log) => {
+            const logsList = document.getElementById("logsList");
+            const li = document.createElement("li");
+            li.appendChild(document.createTextNode(`${log.created_at}: User ${log.user_id} - ${log.activity}`));
+            logsList.appendChild(li);
+        });
     </script>
 </body>
 </html>
