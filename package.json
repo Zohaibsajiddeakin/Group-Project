@@ -2,6 +2,11 @@
   "dependencies": {
     "express": "^4.19.2",
     "flask": "^0.2.10",
-    "python": "^0.0.4"
+    "mongodb": "^6.5.0",
+    "mongoose": "^8.3.3",
+    "path": "^0.12.7",
+    "python": "^0.0.4",
+    "socket.io": "^4.7.5",
+    "sockets": "^0.4.2"
   }
 }

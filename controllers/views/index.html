@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management System</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+    <!-- Registration Form -->
+<h2>Register</h2>
+<form id="registerForm">
+    <label for="regUsername">Username:</label>
+    <input type="text" id="regUsername" name="regUsername" required><br><br>
+    <label for="regPassword">Password:</label>
+    <input type="password" id="regPassword" name="regPassword" required><br><br>
+    <button type="button" onclick="register()">Register</button>
+</form>
+
+<!-- Login Form -->
+<h2>Login</h2>
+<form id="loginForm">
+    <label for="loginUsername">Username:</label>
+    <input type="text" id="loginUsername" name="loginUsername" required><br><br>
+    <label for="loginPassword">Password:</label>
+    <input type="password" id="loginPassword" name="loginPassword" required><br><br>
+    <button type="button" onclick="login()">Login</button>
+</form>
+
+<!-- User Profile Update Form -->
+<h2>Update Profile</h2>
+<form id="updateProfileForm">
+    <label for="updateUsername">New Username:</label>
+    <input type="text" id="updateUsername" name="updateUsername"><br><br>
+    <label for="updatePassword">New Password:</label>
+    <input type="password" id="updatePassword" name="updatePassword"><br><br>
+    <button type="button" onclick="updateProfile()">Update Profile</button>
+</form>
+
+<!-- User Activity Logs -->
+<h2>User Activity Logs</h2>
+<div id="logsList">
+    <!-- Logs will be dynamically rendered here -->
+</div>
+</body>
+</html>
