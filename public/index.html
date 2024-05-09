@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management System</title>
+
+    <link rel="stylesheet" href="/styles/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 20px;
+        }
+
+        form {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #logsList {
+            margin-top: 30px;
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        #logsList li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+    </style>
+</head>
+<body>
+    <!-- Registration Form -->
+    <h2>Register</h2>
+    <form id="registerForm">
+        <label for="regUsername">Username:</label>
+        <input type="text" id="regUsername" name="regUsername" required><br><br>
+        <label for="regPassword">Password:</label>
+        <input type="password" id="regPassword" name="regPassword" required><br><br>
+        <button type="button" onclick="register()">Register</button>
+    </form>
+
+    <!-- Login Form -->
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="loginUsername">Username:</label>
+        <input type="text" id="loginUsername" name="loginUsername" required><br><br>
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="loginPassword" required><br><br>
+        <button type="button" onclick="login()">Login</button>
+    </form>
+
+    <!-- Update Profile Form -->
+    <h2>Update Profile</h2>
+    <div id="updateProfileForm" style="display: none;">
+        <!-- Form fields for updating profile will be dynamically rendered here -->
+        <form id="profileForm">
+            <!-- You can include input fields for updating profile information here -->
+            <button type="button" onclick="updateProfile()">Update Profile</button>
+        </form>
+    </div>
+
+    <!-- User Activity Logs -->
+    <h2>User Activity Logs</h2>
+    <div id="logsList">
+        <!-- Logs will be dynamically rendered here -->
+    </div>
+
+    <script src="app.js"></script>
+    <script src="controllers/logController.js"></script>
+    <script src="controllers/userController.js"></script>
+    <script src="models/log.js"></script>
+    <script src="models/user.js"></script>
+    <script src="views/partials/logsList.html"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
