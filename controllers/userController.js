@@ -11,3 +11,12 @@ exports.loginUser = async (req, res) => {
 exports.updateProfile = async (req, res) => {
     // Profile update logic using User model
 };
+
+exports.logoutUser = async (req, res) => {
+    // Logout logic
+    // Assuming you're using a library like Passport.js for authentication
+    req.logout(); 
+    // Redirect the user to the home page after logout
+    res.redirect('/');
+};
+

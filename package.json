@@ -5,6 +5,7 @@
     "flask": "^0.2.10",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.4",
+    "passport": "^0.7.0",
     "path": "^0.12.7",
     "python": "^0.0.4",
     "socket.io": "^4.7.5",
