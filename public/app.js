@@ -15,7 +15,7 @@ const userController = require('./controllers/userController');
 const logController = require('./controllers/logController');
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://cluster1.fopezw4.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://dbUser:SimplePlan89@cluster1.fopezw4.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
