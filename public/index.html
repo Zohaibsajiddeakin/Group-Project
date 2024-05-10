@@ -100,8 +100,26 @@
         <label for="loginPassword">Password:</label>
         <input type="password" id="loginPassword" name="loginPassword" required><br><br>
         <button type="button" onclick="login()">Login</button>
+        <button type="button" onclick="forgotPassword()">Forgot Password</button>
     </form>
-
+    <!-- Forgot Password Form (Initially Hidden) -->
+<div id="forgotPasswordForm" style="display: none;">
+    <h2>Forgot Password</h2>
+    <form id="resetPasswordForm">
+        <label for="currentPassword">Current Password:</label>
+        <input type="password" id="currentPassword" name="currentPassword" required><br><br>
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword" required><br><br>
+        <label for="confirmNewPassword">Confirm New Password:</label>
+        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required><br><br>
+        <button type="button" onclick="resetPassword()">Change Password</button>
+    </form>
+    <!-- Placeholder for displaying update message -->
+    <div id="updatePasswordMessage"></div>
+   
+    
+    <!-- Placeholder for displaying update message -->
+    <div id="updatePasswordMessage"></div>
     <!-- User Activity Logs -->
     <h2>User Activity Logs</h2>
     <div id="logsList">
@@ -198,13 +216,54 @@
         }
 
     </script>
+    <script>
+        // Function to show the Forgot Password form
+        function showForgotPasswordForm() {
+            document.getElementById('forgotPasswordForm').style.display = 'block';
+        }
+    
+        // Function to handle password reset
+        function resetPassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+    
+            // Check if new password and confirm new password match
+            if (newPassword !== confirmNewPassword) {
+                document.getElementById('updatePasswordMessage').innerHTML = '<p class="error-message">New password and confirm password do not match.</p>';
+                return;
+            }
+    
+            // Send request to update password
+            fetch('/profile/update-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ currentPassword, newPassword })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Password update successful
+                    document.getElementById('updatePasswordMessage').innerHTML = '<p class="success-message">Password updated successfully!</p>';
+                } else {
+                    // Password update failed
+                    document.getElementById('updatePasswordMessage').innerHTML = '<p class="error-message">Failed to update password. Please try again.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error updating password:', error);
+                // Display error message if request fails
+                document.getElementById('updatePasswordMessage').innerHTML = '<p class="error-message">An error occurred. Please try again later.</p>';
+            });
+        }
+    </script>
     <script src="/public/app.js"></script>
     <script src="controllers/logController.js"></script>
     <script src="controllers/userController.js"></script>
     <script src="models/log.js"></script>
     <script src="models/user.js"></script>
     <script src="views/logsList.html"></script>
-
 </body>
 
 </html>

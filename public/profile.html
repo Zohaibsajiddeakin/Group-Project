@@ -26,7 +26,8 @@
         <input type="password" id="newPassword" name="newPassword" required><br><br>
         <button type="submit">Update Password</button>
     </form>
-    
+    <div id="passwordUpdateMessage"></div>
+
     <!-- Update Profile Form -->
     <h2></h2>
     <div id="updateProfileForm" style="display: none;">
@@ -45,6 +46,7 @@
 
         // Get passwordUpdateStatus from query parameter
         const passwordUpdateStatus = getQueryParam('passwordUpdateStatus');
+        console.log('passwordUpdateStatus:', passwordUpdateStatus); // Check if passwordUpdateStatus is retrieved correctly
 
         // Display message based on passwordUpdateStatus
         const messageContainer = document.getElementById('passwordUpdateMessage');
@@ -55,4 +57,5 @@
         }
     </script>
 </body>
+
 </html>
