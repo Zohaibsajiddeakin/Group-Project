@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/styles/profile.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Profile</h1>
+        <div class="profile-info">
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Email:</strong> john@example.com</p>
+            <!-- Add more profile information here -->
+        </div>
+        <a href="/logout">Logout</a>
+    </div>
+    <!-- Profile Page (profile.html) -->
+    <form action="/profile/update-password" method="POST">
+        <label for="currentPassword">Current Password:</label>
+        <input type="password" id="currentPassword" name="currentPassword" required><br><br>
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword" required><br><br>
+        <button type="submit">Update Password</button>
+    </form>
+    
+    <!-- Update Profile Form -->
+    <h2></h2>
+    <div id="updateProfileForm" style="display: none;">
+        <!-- Form fields for updating profile will be dynamically rendered here -->
+        <form id="profileForm">
+            <!-- You can include input fields for updating profile information here -->
+            <button type="button" onclick="updateProfile()">Update Profile</button>
+        </form>
+    </div>
+    <script>
+        // Function to parse query parameters from URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Get passwordUpdateStatus from query parameter
+        const passwordUpdateStatus = getQueryParam('passwordUpdateStatus');
+
+        // Display message based on passwordUpdateStatus
+        const messageContainer = document.getElementById('passwordUpdateMessage');
+        if (passwordUpdateStatus === 'success') {
+            messageContainer.innerHTML = '<p class="success-message">Your password has been updated successfully!</p>';
+        } else if (passwordUpdateStatus === 'error') {
+            messageContainer.innerHTML = '<p class="error-message">Failed to update password. Please try again.</p>';
+        }
+    </script>
+</body>
+</html>

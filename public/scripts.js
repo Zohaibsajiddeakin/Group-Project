@@ -1,27 +1,39 @@
-// Registration function
+// Function to handle registration
 function register() {
-    const username = document.getElementById('regUsername').value;
-    const password = document.getElementById('regPassword').value;
+    // Retrieve username and password from the form
+    var username = document.getElementById("regUsername").value;
+    var password = document.getElementById("regPassword").value;
+
+    // Perform any necessary validation
+
+    // Example AJAX request to handle registration
     fetch('/register', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({
+            username: username,
+            password: password
+        }),
     })
     .then(response => {
         if (response.ok) {
-            alert('Registration successful!');
-            // Optionally, redirect the user to the login page
-            window.location.href = '/login';
+            // Registration successful, display success message
+            alert("Registration successful!");
         } else {
-            alert('Registration failed. Please try again.');
+            // Registration failed, display error message
+            alert("Registration failed. Please try again.");
         }
     })
     .catch(error => {
+        // Handle any network errors
         console.error('Error:', error);
+        // Display error message to the user
+        alert("An error occurred while registering. Please try again later.");
     });
 }
+
 
 // Login function
 function login() {
