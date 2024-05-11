@@ -4,20 +4,13 @@ const mongoose = require('mongoose');
 const http = require('http');
 const path = require('path');
 const session = require('express-session');
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Import the User model
 const User = require('./models/user');
-
-// Controllers
 const userController = require('./controllers/userController');
 const logController = require('./controllers/logController');
+const Log = require('./models/log');
 
-// MongoDB connection
-mongoose.connect('mongodb+srv://cluster1.fopezw4.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,12 +26,33 @@ app.use(session({
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// MongoDB connection
+mongoose.connect('mongodb+srv://@cluster1.fopezw4.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+// Function to create a log entry
+const createLog = async (userId, action, message) => {
+  try {
+    const log = new Log({
+      userId: userId, // Corrected field name
+      action: action, // Corrected field name
+      message: message
+    });
+    await log.save();
+    console.log('Log added successfully:', log);
+  } catch (error) {
+    console.error('Error adding log:', error);
+  }
+};
+
+
 // Middleware to check if user is logged in
 const isLoggedIn = (req, res, next) => {
   if (req.session && req.session.userId) {
-    next(); // User is logged in, proceed to next middleware or route handler
+    next();
   } else {
-    res.redirect('/login'); // User is not logged in, redirect to login page
+    res.redirect('/login');
   }
 };
 
@@ -55,39 +69,29 @@ app.post('/profile/update-password', isLoggedIn, async (req, res) => {
   const userId = req.session.userId;
 
   try {
-    // Find the user by ID
     const user = await User.findById(userId);
-
-    // Verify the current password
     if (!user || user.password !== currentPassword) {
-      // Redirect to profile page with error message if current password is invalid
       return res.redirect('/profile?passwordUpdateStatus=error');
     }
-
-    // Update the user's password
     user.password = newPassword;
     await user.save();
-
-    // Redirect to profile page with success message after successful password update
     res.redirect('/profile?passwordUpdateStatus=success');
   } catch (error) {
     console.error('Error updating password:', error);
-    // Redirect to profile page with error message if an error occurs
     res.redirect('/profile?passwordUpdateStatus=error');
   }
 });
 
 // Serve profile.html as the profile route
 app.get('/profile', (req, res) => {
-  // Render the profile page template with password update status
   res.sendFile(path.join(__dirname, '/profile.html'));
 });
 
 // Your route handlers
 app.post('/login', userController.loginUser);
 app.post('/register', userController.registerUser);
-app.get('/logout', userController.logoutUser); // Add logout route
-app.put('/profile/:id', isLoggedIn, userController.updateProfile); // Protect profile update route
+app.get('/logout', userController.logoutUser);
+app.put('/profile/:id', isLoggedIn, userController.updateProfile);
 app.get('/logs', logController.getLogs);
 app.post('/logs', logController.addLog);
 app.delete('/logs/:id', logController.deleteLog);
@@ -97,7 +101,9 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
 
-
+// Example usage: create a log entry
+const userId = 'newuser';
+createLog(userId, 'Login', 'User logged in successfully');
 
 
 

@@ -103,167 +103,213 @@
         <button type="button" onclick="forgotPassword()">Forgot Password</button>
     </form>
     <!-- Forgot Password Form (Initially Hidden) -->
-<div id="forgotPasswordForm" style="display: none;">
-    <h2>Forgot Password</h2>
-    <form id="resetPasswordForm">
-        <label for="currentPassword">Current Password:</label>
-        <input type="password" id="currentPassword" name="currentPassword" required><br><br>
-        <label for="newPassword">New Password:</label>
-        <input type="password" id="newPassword" name="newPassword" required><br><br>
-        <label for="confirmNewPassword">Confirm New Password:</label>
-        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required><br><br>
-        <button type="button" onclick="resetPassword()">Change Password</button>
-    </form>
-    <!-- Placeholder for displaying update message -->
-    <div id="updatePasswordMessage"></div>
-   
-    
-    <!-- Placeholder for displaying update message -->
-    <div id="updatePasswordMessage"></div>
-    <!-- User Activity Logs -->
-    <h2>User Activity Logs</h2>
-    <div id="logsList">
-        <!-- Logs will be dynamically rendered here -->
-    </div>
-    <script>
-        // Function to handle registration
-        function register() {
-            // Retrieve username and password from the form
-            var username = document.getElementById("regUsername").value;
-            var password = document.getElementById("regPassword").value;
+    <div id="forgotPasswordForm" style="display: none;">
+        <h2>Forgot Password</h2>
+        <form id="resetPasswordForm">
+            <label for="currentPassword">Current Password:</label>
+            <input type="password" id="currentPassword" name="currentPassword" required><br><br>
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required><br><br>
+            <label for="confirmNewPassword">Confirm New Password:</label>
+            <input type="password" id="confirmNewPassword" name="confirmNewPassword" required><br><br>
+            <button type="button" onclick="resetPassword()">Change Password</button>
+        </form>
+        <!-- Placeholder for displaying update message -->
+        <div id="updatePasswordMessage"></div>
 
-            // Perform any necessary validation
 
-            // Example AJAX request to handle registration
-            fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: password
-                }),
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Registration successful, display success message
-                        alert("Registration successful!");
-                    } else {
-                        // Registration failed, display error message
-                        alert("Registration failed. Please try again.");
-                    }
+        <!-- Placeholder for displaying update message -->
+        <div id="updatePasswordMessage"></div>
+        <!-- User Activity Logs -->
+        <h2>User Activity Logs</h2>
+        <div id="logsList">
+            <!-- Logs will be dynamically rendered here -->
+        </div>
+        <script>
+            // Function to handle registration
+            function register() {
+                // Retrieve username and password from the form
+                var username = document.getElementById("regUsername").value;
+                var password = document.getElementById("regPassword").value;
+
+                // Perform any necessary validation
+
+                // Example AJAX request to handle registration
+                fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    }),
                 })
-                .catch(error => {
-                    // Handle any network errors
-                    console.error('Error:', error);
-                    // Display error message to the user
-                    alert("An error occurred while registering. Please try again later.");
-                });
-        }
-    </script>
-    <script>
-        // Login function
-        function login() {
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Login successful!');
-                        // Optionally, redirect the user to their profile page
-                        window.location.href = '/profile';
-                    } else {
-                        alert('Login failed. Please check your credentials.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-    </script>
-    <script>
-        // Update profile function
-        function updateProfile() {
-            const username = document.getElementById('profileUsername').value; // Assuming you have an input field with id 'profileUsername' for updating username
-            const password = document.getElementById('profilePassword').value; // Assuming you have an input field with id 'profilePassword' for updating password
-            fetch('/profile/:id', { // Assuming you're sending the user ID as a parameter in the URL
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username, password })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Profile updated successfully!');
-                        // Optionally, redirect the user to their profile page or refresh the page to reflect the changes
-                        window.location.reload(); // Reload the page to reflect the changes
-                    } else {
-                        alert('Failed to update profile. Please try again.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-    </script>
-    <script>
-        // Function to show the Forgot Password form
-        function showForgotPasswordForm() {
-            document.getElementById('forgotPasswordForm').style.display = 'block';
-        }
-    
-        // Function to handle password reset
-        function resetPassword() {
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-    
-            // Check if new password and confirm new password match
-            if (newPassword !== confirmNewPassword) {
-                document.getElementById('updatePasswordMessage').innerHTML = '<p class="error-message">New password and confirm password do not match.</p>';
-                return;
+                    .then(response => {
+                        if (response.ok) {
+                            // Registration successful, display success message
+                            alert("Registration successful!");
+                        } else {
+                            // Registration failed, display error message
+                            alert("Registration failed. Please try again.");
+                        }
+                    })
+                    .catch(error => {
+                        // Handle any network errors
+                        console.error('Error:', error);
+                        // Display error message to the user
+                        alert("An error occurred while registering. Please try again later.");
+                    });
             }
-    
-            // Send request to update password
-            fetch('/profile/update-password', {
+        </script>
+        <script>
+            // Login function
+            function login() {
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Login successful!');
+                            // Optionally, redirect the user to their profile page
+                            window.location.href = '/profile';
+                        } else {
+                            alert('Login failed. Please check your credentials.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+        </script>
+        <script>
+            // Update profile function
+            function updateProfile() {
+                const username = document.getElementById('profileUsername').value; // Assuming you have an input field with id 'profileUsername' for updating username
+                const password = document.getElementById('profilePassword').value; // Assuming you have an input field with id 'profilePassword' for updating password
+                fetch('/profile/:id', { // Assuming you're sending the user ID as a parameter in the URL
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Profile updated successfully!');
+                            // Optionally, redirect the user to their profile page or refresh the page to reflect the changes
+                            window.location.reload(); // Reload the page to reflect the changes
+                        } else {
+                            alert('Failed to update profile. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+
+        </script>
+        <script>
+            // Function to show the Forgot Password form
+            function showForgotPasswordForm() {
+                document.getElementById('forgotPasswordForm').style.display = 'block';
+            }
+
+            // Function to handle password reset
+            function resetPassword() {
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+                // Check if new password and confirm new password match
+                if (newPassword !== confirmNewPassword) {
+                    document.getElementById('updatePasswordMessage').innerHTML = '<p class="error-message">New password and confirm password do not match.</p>';
+                    return;
+                }
+
+                // Send request to update password
+                fetch('/profile/update-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // Password update successful
+                            document.getElementById('updatePasswordMessage').innerHTML = '<p class="success-message">Password updated successfully!</p>';
+                        } else {
+                            // Password update failed
+                            document.getElementById('updatePasswordMessage').innerHTML = '<p class="error-message">Failed to update password. Please try again.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating password:', error);
+                        // Display error message if request fails
+                        document.getElementById('updatePasswordMessage').innerHTML = '<p class="error-message">An error occurred. Please try again later.</p>';
+                    });
+            }
+        </script>
+        <script>
+        // Function to fetch logs from the server and display them
+        function fetchAndDisplayLogs() {
+            fetch('/logs')
+                .then(response => response.json())
+                .then(logs => {
+                    const logsList = document.getElementById('logsList');
+                    logsList.innerHTML = ''; // Clear existing logs
+                    logs.forEach(log => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = log.message;
+                        logsList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching logs:', error));
+        }
+
+        // Function to create a new log entry
+        function createLog(userId, activity, message) {
+            fetch('/logs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ currentPassword, newPassword })
+                body: JSON.stringify({ userId, activity, message })
             })
-            .then(response => {
-                if (response.ok) {
-                    // Password update successful
-                    document.getElementById('updatePasswordMessage').innerHTML = '<p class="success-message">Password updated successfully!</p>';
-                } else {
-                    // Password update failed
-                    document.getElementById('updatePasswordMessage').innerHTML = '<p class="error-message">Failed to update password. Please try again.</p>';
-                }
-            })
-            .catch(error => {
-                console.error('Error updating password:', error);
-                // Display error message if request fails
-                document.getElementById('updatePasswordMessage').innerHTML = '<p class="error-message">An error occurred. Please try again later.</p>';
-            });
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Log created successfully');
+                        // Optionally, fetch and display logs again to reflect the new entry
+                        fetchAndDisplayLogs();
+                    } else {
+                        console.error('Failed to create log:', response.statusText);
+                    }
+                })
+                .catch(error => console.error('Error creating log:', error));
         }
+
+        // Example usage: create a log entry
+        createLog('Login', 'User logged in successfully');
+
+        // Fetch and display logs when the page loads
+        document.addEventListener('DOMContentLoaded', fetchAndDisplayLogs);
     </script>
-    <script src="/public/app.js"></script>
-    <script src="controllers/logController.js"></script>
-    <script src="controllers/userController.js"></script>
-    <script src="models/log.js"></script>
-    <script src="models/user.js"></script>
-    <script src="views/logsList.html"></script>
+    
+        </script>
+        <script src="/public/app.js"></script>
+        <script src="controllers/logController.js"></script>
+        <script src="controllers/userController.js"></script>
+        <script src="models/log.js"></script>
+        <script src="models/user.js"></script>
+        <script src="views/logsList.html"></script>
 </body>
 
 </html>

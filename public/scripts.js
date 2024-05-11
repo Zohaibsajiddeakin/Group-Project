@@ -84,3 +84,28 @@ function updateProfile() {
       console.error('Error:', error);
   });
 }
+// Define the createLog function
+const createLog = async (userId, action, message) => {
+    try {
+        // Send a request to add log entry to the server
+        const response = await fetch('/logs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId, action, message })
+        });
+
+        if (response.ok) {
+            console.log('Log added successfully');
+        } else {
+            console.error('Failed to add log:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error adding log:', error);
+    }
+};
+
+// Example usage: create a log entry for successful login
+const userId = 'dbUser'; // Replace with actual user ID
+createLog(userId, 'Login', 'User logged in successfully');
