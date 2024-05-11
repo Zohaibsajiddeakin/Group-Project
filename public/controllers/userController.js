@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const { getLogs, addLog, deleteLog } = require('./logController');
+
 
 exports.registerUser = async (req, res) => {
     const { username, password } = req.body;
@@ -11,6 +13,7 @@ exports.registerUser = async (req, res) => {
         // Create a new user
         const newUser = await User.create({ username, password });
         res.status(201).json({ message: 'User registered successfully', user: newUser });
+        addLog(username, "successfully registered user.")
     } catch (error) {
         console.error('Error registering user:', error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -26,6 +29,7 @@ exports.loginUser = async (req, res) => {
             // Set session userId to user's id
             req.session.userId = user._id;
             res.status(200).json({ message: 'Login successful' });
+            addLog(username, "Successfully Logged In User.")
         } else {
             res.status(401).json({ message: 'Invalid username or password' });
         }
@@ -45,6 +49,7 @@ exports.updateProfile = async (req, res) => {
         // Update user profile
         const updatedUser = await User.findByIdAndUpdate(userId, { username, password }, { new: true });
         res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+        addLog(userId, "Successfully Updated User.")
     } catch (error) {
         console.error('Error updating profile:', error);
         res.status(500).json({ message: 'Internal Server Error' });

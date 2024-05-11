@@ -14,23 +14,31 @@ exports.getLogs = async (req, res) => {
 };
 
 // Function to add a new log
-exports.addLog = async (req, res) => {
-    const { userId, activity } = req.body;
-  
+exports.addLog = async (userId, activity) => {
+    userId = userId.toString();
+    activity = activity.toString();
     try {
       // Create a new log instance
       const newLog = new Log({
-        userId,
+        userId: userId,
         action: activity // Use 'activity' here instead of 'action'
       });
   
       // Save the log to the database
       await newLog.save();
+      console.log('Log added successfully:', newLog);
   
-      res.status(201).json({ message: 'Log added successfully' });
+      // res.status(201).json({ message: 'Log added successfully' });
     } catch (error) {
       console.error('Error adding log:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      const newLog = new Log({
+        userId: "Error",
+        action: "Failed Creating Log"
+      })
+
+      await newLog.save();
+      console.log('Log added successfully:', newLog);
+      // res.status(500).json({ message: 'Internal Server Error' });
     }
   };
   

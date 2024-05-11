@@ -27,7 +27,7 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB connection
-mongoose.connect('mongodb+srv://@cluster1.fopezw4.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://SIT774_Example:it8_P-rscyza99h@cluster0.nata69c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -75,6 +75,7 @@ app.post('/profile/update-password', isLoggedIn, async (req, res) => {
     }
     user.password = newPassword;
     await user.save();
+    await createLog(userId.toString(), "Update Password", "Password update successful.")
     res.redirect('/profile?passwordUpdateStatus=success');
   } catch (error) {
     console.error('Error updating password:', error);
